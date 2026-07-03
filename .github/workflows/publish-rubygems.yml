@@ -1,0 +1,57 @@
+name: Publish RubyGems
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@0dafeac902942906541bc140009cdbf32665b601  # v1.315.0
+        with:
+          ruby-version: '3.3'
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
+      - name: Derive version and upstream release tag
+        id: version
+        run: |
+          if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
+            TAG="${GITHUB_REF_NAME}"
+            VERSION="${TAG#v}"
+          else
+            VERSION="$(ruby -Ilib -e 'require "vastlint/version"; print Vastlint::VERSION')"
+            TAG="v${VERSION}"
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Vendor release libraries
+        run: ./scripts/fetch-libs.sh "${{ steps.version.outputs.tag }}"
+
+      - name: Run tests
+        run: ruby -Ilib:test test/vastlint_test.rb
+
+      - name: Build gem
+        run: gem build vastlint.gemspec
+
+      - name: Publish to RubyGems
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: |
+          out=$(./scripts/publish-rubygems.sh 2>&1) && echo "$out" && exit 0
+          echo "$out"
+          echo "$out" | grep -qiE "repushing of gem versions is not allowed|already been taken" && exit 0
+          exit 1
