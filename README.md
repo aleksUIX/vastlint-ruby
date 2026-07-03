@@ -2,6 +2,8 @@
 
 High-performance, in-process VAST XML validation for Ruby backends.
 
+**Ruby & Rails guide:** [vastlint.org/docs/best-vast-validator-ruby](https://vastlint.org/docs/best-vast-validator-ruby/) · **Rule reference:** [vastlint.org/docs/rules](https://vastlint.org/docs/rules/) · **Web validator:** [vastlint.org/validate](https://vastlint.org/validate) · **Test a live tag URL:** [vastlint.org/tester](https://vastlint.org/tester/) · **Inspect wrapper chains:** [vastlint.org/inspect](https://vastlint.org/inspect/)
+
 This gem wraps the existing `vastlint-ffi` C API, which is backed by the same Rust core used by the CLI, Go binding, Erlang NIF, MCP server, and web validator. The intended use case is a DSP, SSP, ad server, or trafficking backend that needs to validate VAST XML and return structured linting results to a React or other web frontend.
 
 ## Why this shape
