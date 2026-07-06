@@ -118,6 +118,15 @@ The response shape is stable and frontend-friendly:
 }
 ```
 
+### Shareable report links
+
+Need a link instead of raw output? The vastlint CLI can upload a validation report (rule IDs, severities, and locations; never the input XML) and print a public URL you can paste into Slack, tickets, or PRs:
+
+```sh
+vastlint check tag.xml --share
+# https://vastlint.org/r/<id>
+```
+
 ## API
 
 ```ruby
