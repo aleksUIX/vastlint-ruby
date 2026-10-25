@@ -17,7 +17,7 @@ This gem wraps the existing `vastlint-ffi` C API, which is backed by the same Ru
 
 ## Install
 
-RubyGems.org is not currently usable for new gem registrations, so the supported distribution target for this package is GitHub Packages.
+This repository provides workflows for GitHub Packages and RubyGems. Use the registry where the selected version has been published. The GitHub Packages installation path below requires authentication.
 
 Authenticate Bundler against GitHub Packages:
 
@@ -43,12 +43,12 @@ bundle install
 
 The gem expects a platform-matched `libvastlint` shared library.
 
-For development in this monorepo, it will automatically try the sibling `vastlint/target/debug` and `vastlint/target/release` outputs.
+For development, it will also try the sibling `vastlint/target/debug` and `vastlint/target/release` outputs.
 
 For a distributable gem release, vendor the release libraries into `lib/vastlint/native/*` with:
 
 ```sh
-./scripts/fetch-libs.sh v0.4.14
+bash scripts/fetch-libs.sh
 ```
 
 You can also point the gem at an explicit shared library path:
@@ -57,7 +57,7 @@ You can also point the gem at an explicit shared library path:
 export VASTLINT_LIB_PATH=/absolute/path/to/libvastlint.dylib
 ```
 
-If you need anonymous public installs without GitHub auth, GitHub Packages is the wrong host. In that case, use a different gem server such as Gemfury, Cloudsmith, or a private Gemstash instance.
+The RubyGems workflow requires a configured `RUBYGEMS_API_KEY`. Publishing to GitHub Packages does not also publish to RubyGems.
 
 ## Usage
 
@@ -148,6 +148,10 @@ result = Vastlint.validate(
 )
 ```
 
+## Engine version and build verification
+
+`core-version.txt` records the bundled public engine release. The native `manifest.json` records each file's SHA-256 and release URL. The binding's package version and engine version are reported separately. Refresh all four platform libraries with `bash scripts/fetch-libs.sh`, or pass an explicit engine tag. Run `python3 scripts/check-native.py` before packaging. No sibling checkout is required for the bundled runtime.
+
 ## Native library layout
 
 Vendored release libraries belong at:
@@ -168,7 +172,7 @@ If this gem lives in its own GitHub repository, you do not need to add a separat
 The included workflow at `.github/workflows/publish-github-packages.yml`:
 
 - derives the gem version from the tag or `lib/vastlint/version.rb`
-- downloads the matching `vastlint-ffi-*` shared libraries from the main `aleksUIX/vastlint` release
+- downloads the `vastlint-ffi-*` shared libraries from the public engine release pinned in `core-version.txt`
 - runs the Ruby tests
 - builds the gem
 - pushes it to `rubygems.pkg.github.com/<owner>` using `GITHUB_TOKEN`

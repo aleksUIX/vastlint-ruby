@@ -32,11 +32,17 @@ jobs:
             VERSION="${TAG#v}"
           else
             VERSION="$(ruby -Ilib -e 'require "vastlint/version"; print Vastlint::VERSION')"
-            TAG="v${VERSION}"
           fi
 
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          ENGINE_TAG="v$(cat core-version.txt)"
+          echo "tag=${ENGINE_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Stamp package version from the release tag
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          ruby -e 'p = "lib/vastlint/version.rb"; v = ENV.fetch("PACKAGE_VERSION"); abort "invalid version" unless v.match?(/\A[0-9]+\.[0-9]+\.[0-9]+(?:[.-][A-Za-z0-9.-]+)?\z/); File.write(p, File.read(p).sub(/VERSION = "[^"]+"/, "VERSION = \"#{v}\""))'
 
       - name: Vendor release libraries
         run: ./scripts/fetch-libs.sh "${{ steps.version.outputs.tag }}"

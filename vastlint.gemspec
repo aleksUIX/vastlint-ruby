@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
       "README.md",
       "LICENSE",
       "NOTICE",
+      "core-version.txt",
       "Rakefile",
       "lib/**/*.rb",
       "lib/vastlint/native/**/*",
