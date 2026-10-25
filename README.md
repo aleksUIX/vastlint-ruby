@@ -1,5 +1,7 @@
 # vastlint-ruby
 
+Created by [Aleksander Sekowski](https://github.com/aleksUIX).
+
 High-performance, in-process VAST XML validation for Ruby backends.
 
 **Ruby & Rails guide:** [vastlint.org/docs/best-vast-validator-ruby](https://vastlint.org/docs/best-vast-validator-ruby/) · **Rule reference:** [vastlint.org/docs/rules](https://vastlint.org/docs/rules/) · **Web validator:** [vastlint.org/validate](https://vastlint.org/validate) · **Test a live tag URL:** [vastlint.org/tester](https://vastlint.org/tester/) · **Inspect wrapper chains:** [vastlint.org/inspect](https://vastlint.org/inspect/)

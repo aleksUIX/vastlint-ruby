@@ -5,7 +5,7 @@ require_relative "lib/vastlint/version"
 Gem::Specification.new do |spec|
   spec.name = "vastlint"
   spec.version = Vastlint::VERSION
-  spec.authors = ["Alex Sekowski"]
+  spec.authors = ["Aleksander Sekowski"]
   spec.email = ["alex@vastlint.org"]
 
   spec.summary = "In-process Ruby bindings for vastlint VAST XML validation"
@@ -26,6 +26,8 @@ Gem::Specification.new do |spec|
     Dir[
       "Gemfile",
       "README.md",
+      "LICENSE",
+      "NOTICE",
       "Rakefile",
       "lib/**/*.rb",
       "lib/vastlint/native/**/*",
