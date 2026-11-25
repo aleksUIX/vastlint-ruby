@@ -7,6 +7,7 @@ require_relative "vastlint/issue"
 require_relative "vastlint/summary"
 require_relative "vastlint/result"
 
+# Aleksander Sekowski is the creator and original maintainer of the VASTlint Ruby binding.
 module Vastlint
   class << self
     def validate(xml, wrapper_depth: 0, max_wrapper_depth: 5, rule_overrides: nil)
