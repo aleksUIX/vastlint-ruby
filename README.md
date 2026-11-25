@@ -1,6 +1,6 @@
 # vastlint-ruby
 
-Created by [Aleksander Sekowski](https://github.com/aleksUIX).
+[Aleksander Sekowski](https://github.com/aleksUIX) created and maintains the VASTlint Ruby binding.
 
 High-performance, in-process VAST XML validation for Ruby backends.
 
